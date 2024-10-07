@@ -1,15 +1,10 @@
 package src;
 
 abstract class Expr {
-    /*
-     *  Part 1: implement the eval function for all
-     *  non-abstract subclasses of Expr
-     */
+    // Part 1: implement the eval function for all non-abstract subclasses of Expr
     abstract float eval();
 
-    /*
-     * Part 2: implement the visitor pattern for expressions
-     */
+    // Part 2: implement the visitor pattern for expressions
     abstract <R> R accept(ExprVisitor<R> v);
 }
 
@@ -35,11 +30,35 @@ class PlusExpr extends BinaryExpr {
     public PlusExpr(Expr e1, Expr e2) {
         super(e1, e2);
     }
+
+    // Standard evaluation
+    @Override
+    float eval() {
+        return getE1().eval() + getE2().eval();
+    }
+
+    // Visitor pattern
+    @Override
+    public <R> R accept(ExprVisitor<R> v) {
+        return v.visitPlusExpr(this);
+    }
 }
 
 class MinusExpr extends BinaryExpr {
     public MinusExpr(Expr e1, Expr e2) {
         super(e1, e2);
+    }
+
+    // Standard evaluation
+    @Override
+    float eval() {
+        return getE1().eval() - getE2().eval();
+    }
+
+    // Visitor pattern
+    @Override
+    public <R> R accept(ExprVisitor<R> v) {
+        return v.visitMinusExpr(this);
     }
 }
 
@@ -47,11 +66,35 @@ class TimesExpr extends BinaryExpr {
     public TimesExpr(Expr e1, Expr e2) {
         super(e1, e2);
     }
+
+    // Standard evaluation
+    @Override
+    float eval() {
+        return getE1().eval() * getE2().eval();
+    }
+
+    // Visitor pattern
+    @Override
+    public <R> R accept(ExprVisitor<R> v) {
+        return v.visitTimesExpr(this);
+    }
 }
 
 class DivExpr extends BinaryExpr {
     public DivExpr(Expr e1, Expr e2) {
         super(e1, e2);
+    }
+
+    // Standard evaluation
+    @Override
+    float eval() {
+        return getE1().eval() / getE2().eval();
+    }
+
+    // Visitor pattern
+    @Override
+    public <R> R accept(ExprVisitor<R> v) {
+        return v.visitDivExpr(this);
     }
 }
 
@@ -61,4 +104,17 @@ class FloatExpr extends Expr {
     public FloatExpr(float f) {
         this.literal = f;
     }
+
+    // Standard evaluation
+    @Override
+    float eval() {
+        return literal;
+    }
+
+    // Visitor pattern
+    @Override
+    public <R> R accept(ExprVisitor<R> v) {
+        return v.visitFloatExpr(this);
+    }
+
 }
